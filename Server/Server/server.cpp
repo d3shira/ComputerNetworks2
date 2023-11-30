@@ -38,5 +38,45 @@ void ClientHandlerThread(int index)
 }
 
 int main() {
+   
+    WSAData wsaData;
+    WORD DllVersion = MAKEWORD(2, 2);
+    if (WSAStartup(DllVersion, &wsaData) != 0) 
+    {
+        MessageBoxA(NULL, "WinSock startup failed", "Error", MB_OK | MB_ICONERROR);
+        return 0;
+    }
 
+    SOCKADDR_IN addr;                 
+    int addrlen = sizeof(addr);      
+    addr.sin_addr.s_addr = INADDR_ANY; 
+    addr.sin_port = htons(1111);       
+    addr.sin_family = AF_INET;         
+
+    SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL); 
+    bind(sListen, (SOCKADDR*)&addr, sizeof(addr));      
+    listen(sListen, SOMAXCONN);                      
+
+    SOCKET newConnection; 
+    for (int i = 0; i < 100; i++)
+    {
+        newConnection = accept(sListen, (SOCKADDR*)&addr, &addrlen); 
+        if (newConnection == 0)                                    
+        {
+            std::cout << "Failed to accept the client's connection." << std::endl;
+        }
+        else 
+        {
+            std::cout << "Client Connected" << std::endl;
+            char MOTD[256] = "This is a message sent from the server"; 
+            send(newConnection, MOTD, sizeof(MOTD), NULL);           
+            Connections[i] = newConnection;                            
+            ConnectionCounter += 1;                                  
+            CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandlerThread, (LPVOID)(i), NULL, NULL); 
+        }
+    }
+
+    system("pause");
+    return 0;
 }
+
