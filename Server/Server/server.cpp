@@ -211,10 +211,10 @@ int main() {
 
     sockaddr_in server;
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = inet_addr("192.168.178.28");               //IP adresa 
+    server.sin_addr.s_addr = inet_addr("192.168.178.28");               
 
     if (server.sin_addr.s_addr == INADDR_NONE) {
-        printf("Invalid IP address: %s", "192.168.178.28");              //IP adresa
+        printf("Invalid IP address: %s", "192.168.178.28");             
         exit(EXIT_FAILURE);
     }
     server.sin_port = htons(PORT);
