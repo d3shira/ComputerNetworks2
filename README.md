@@ -11,12 +11,17 @@ Duhet të jenë te instaluara:
 * Kompilues C++
 * Libraria Winsock (për Windows)
 
+
+Komandat e Klientit
+
 * Klienti i parë ka privilegje shkrimi, leximi dhe ekzekutimi (append file dhe delete file).
 * Klientët e tjerë kanë vetëm privilegje leximi.
+
 
 Komandat e Serverit
 
 * Mesazh Tekstual: Serveri përgjigjet tek mesazhet tekstuale nga klientët.
+
 
 Privilegjet e Klientit
   
