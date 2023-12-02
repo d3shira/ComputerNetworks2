@@ -30,7 +30,7 @@ Shënime
 * Përditësoni adresën IP të serverit në file client.cpp për të përputhur me adresën IP të serverit tuaj.  
 
 
-Punuan:
+Punuan: <br>
 [Dëshira Randobrava](https://github.com/d3shira) <br>
 [Diart Maraj](https://github.com/diartmaraj) <br>
 [Ema Zeqiri](https://github.com/emazech)
