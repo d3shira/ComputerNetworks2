@@ -47,6 +47,33 @@ int main()
         WSACleanup();
         return 3;
     } 
+    
+    while (true)
+    {
+        char message[BUFLEN];
+        printf("Enter message: ");
+        cin.getline(message, BUFLEN);
+
+        if (send(client_socket, message, strlen(message), 0) == SOCKET_ERROR)
+        {
+            printf("send() failed with error code: %d", WSAGetLastError());
+            closesocket(client_socket);
+            WSACleanup();
+            return 4;
+        }
+
+        char answer[BUFLEN] = {};
+        int answer_length;
+        if (answer_length = recv(client_socket, answer, BUFLEN, 0) == SOCKET_ERROR)
+        {
+            printf("recv() failed with error code: %d", WSAGetLastError());
+            closesocket(client_socket);
+            WSACleanup();
+            return 5;
+        }
+
+        cout << "Server says: " << answer << "\n";
+    }
     closesocket(client_socket);
     WSACleanup();
     return 0;
