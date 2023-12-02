@@ -126,7 +126,7 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
         {
             if (allowedWriteClients.empty() || allowedWriteClients.count(clientKey) > 0)
             {
-                // Extract filename and content from the command
+               
                 string fileAppendCommand = message + 8;
                 size_t pos = fileAppendCommand.find(' ');
                 if (pos != string::npos)
@@ -134,10 +134,10 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
                     string filename = fileAppendCommand.substr(0, pos);
                     string content = fileAppendCommand.substr(pos + 1);
 
-                    // Write content to the file
+                   
                     appendFile(filename, content);
 
-                    // Send a success message to the client
+                   
                     string successMsg = "Content appended to file: " + filename;
                     send(client_socket, successMsg.c_str(), successMsg.size(), 0);
 
@@ -146,7 +146,7 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
             }
             else
             {
-                // Send an error message to subsequent clients trying to write
+               
                 string errorMsg = "Append operation not allowed for this client";
                 send(client_socket, errorMsg.c_str(), errorMsg.size(), 0);
             }
@@ -155,13 +155,13 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
         {
             if (allowedWriteClients.empty() || allowedWriteClients.count(clientKey) > 0)
             {
-                // Extract filename from the command
+                
                 string filename = message + 8;
 
-                // Delete the file
+                
                 deleteFile(filename);
 
-                // Send a success message to the client
+                
                 string successMsg = "File deleted: " + filename;
                 send(client_socket, successMsg.c_str(), successMsg.size(), 0);
 
@@ -169,7 +169,7 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
             }
             else
             {
-                // Send an error message to subsequent clients trying to delete
+               
                 string errorMsg = "Delete operation not allowed for this client";
                 send(client_socket, errorMsg.c_str(), errorMsg.size(), 0);
             }
