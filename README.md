@@ -33,7 +33,7 @@ Shënime
 Punuan: <br>
 [Dëshira Randobrava](https://github.com/d3shira) <br>
 [Diart Maraj](https://github.com/diartmaraj) <br>
-[Ema Zeqiri](https://github.com/emazech)
+[Ema Zeqiri](https://github.com/emazech) <br>
 [Era Maliqi](https://github.com/eramaliqi)
 
 
