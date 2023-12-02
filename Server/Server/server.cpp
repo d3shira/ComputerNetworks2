@@ -26,6 +26,19 @@ void writeFile(const string& filename, const string& content)
         cout << "Error opening file: " << filename << endl;
     }
 }
+void appendFile(const string& filename, const string& content)
+{
+    ofstream file(filename, ios::out | ios::app | ios::binary);
+    if (file.is_open())
+    {
+        file << content;
+        file.close();
+    }
+    else
+    {
+        cout << "Error opening file: " << filename << endl;
+    }
+}
 
 string readFile(const string& filename)
 {
@@ -40,6 +53,17 @@ string readFile(const string& filename)
     {
         cout << "Error opening file: " << filename << endl;
         return "";
+    }
+}
+void deleteFile(const string& filename)
+{
+    if (remove(filename.c_str()) != 0)
+    {
+        cout << "Error deleting file: " << filename << endl;
+    }
+    else
+    {
+        cout << "File deleted successfully: " << filename << endl;
     }
 }
 
@@ -95,6 +119,58 @@ void handleClient(SOCKET client_socket, sockaddr_in clientAddr, unordered_set<st
             else
             {
                 string errorMsg = "Write operation not allowed for this client";
+                send(client_socket, errorMsg.c_str(), errorMsg.size(), 0);
+            }
+        }
+        else if (strncmp(message, "file a: ", 8) == 0)
+        {
+            if (allowedWriteClients.empty() || allowedWriteClients.count(clientKey) > 0)
+            {
+                // Extract filename and content from the command
+                string fileAppendCommand = message + 8;
+                size_t pos = fileAppendCommand.find(' ');
+                if (pos != string::npos)
+                {
+                    string filename = fileAppendCommand.substr(0, pos);
+                    string content = fileAppendCommand.substr(pos + 1);
+
+                    // Write content to the file
+                    appendFile(filename, content);
+
+                    // Send a success message to the client
+                    string successMsg = "Content appended to file: " + filename;
+                    send(client_socket, successMsg.c_str(), successMsg.size(), 0);
+
+                    allowedWriteClients.insert(clientKey); // Mark that this client is allowed to write
+                }
+            }
+            else
+            {
+                // Send an error message to subsequent clients trying to write
+                string errorMsg = "Append operation not allowed for this client";
+                send(client_socket, errorMsg.c_str(), errorMsg.size(), 0);
+            }
+        }
+        else if (strncmp(message, "file d: ", 8) == 0)
+        {
+            if (allowedWriteClients.empty() || allowedWriteClients.count(clientKey) > 0)
+            {
+                // Extract filename from the command
+                string filename = message + 8;
+
+                // Delete the file
+                deleteFile(filename);
+
+                // Send a success message to the client
+                string successMsg = "File deleted: " + filename;
+                send(client_socket, successMsg.c_str(), successMsg.size(), 0);
+
+                allowedWriteClients.insert(clientKey); // Mark that this client is allowed to write
+            }
+            else
+            {
+                // Send an error message to subsequent clients trying to delete
+                string errorMsg = "Delete operation not allowed for this client";
                 send(client_socket, errorMsg.c_str(), errorMsg.size(), 0);
             }
         }
