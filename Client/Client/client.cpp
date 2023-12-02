@@ -1,62 +1,53 @@
-#pragma warning(disable: 4996)
-
-#include <WinSock2.h>
-#include <string>
 #include <iostream>
+#include <winsock2.h>
+using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
+#pragma warning(disable : 4996)
 
-SOCKET Connection; // This client's connection to the server
-
-void ClientThread()
-{
-    char buffer[256]; // Create a buffer to hold messages up to 256 characters
-    while (true)
-    {
-        int bytesReceived = recv(Connection, buffer, sizeof(buffer), NULL); // Receive buffer
-        if (bytesReceived <= 0)
-        {
-            std::cout << "Server disconnected" << std::endl;
-            closesocket(Connection);
-            return;
-        }
-
-        std::cout << buffer << std::endl;
-    }
-}
+#define SERVER "192.168.238.195"
+#define BUFLEN 512
+#define PORT 8889
 
 int main()
 {
-    WSAData wsaData;
-    WORD DllVersion = MAKEWORD(2, 1);
-    if (WSAStartup(DllVersion, &wsaData) != 0)
+
+    system("title TCP Client");
+
+
+    WSADATA ws;
+    printf("Initialising Winsock...");
+    if (WSAStartup(MAKEWORD(2, 2), &ws) != 0)
     {
-        MessageBoxA(NULL, "Winsock startup failed", "Error", MB_OK | MB_ICONERROR);
-        return 0;
+        printf("Failed. Error Code: %d", WSAGetLastError());
+        return 1;
     }
-    
-    SOCKADDR_IN addr;
-    int sizeofaddr = sizeof(addr);
-    addr.sin_addr.s_addr = inet_addr(""); // IP Adresa
-    addr.sin_port = htons(); // Porti
-    addr.sin_family = AF_INET;
-    
-    Connection = socket(AF_INET, SOCK_STREAM, NULL);
-    
-    if (connect(Connection, (SOCKADDR*)&addr, sizeofaddr) != 0)
+    printf("Initialised.\n");
+
+
+    SOCKET client_socket;
+    if ((client_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
     {
-        MessageBoxA(NULL, "Failed to Connect", "Error", MB_OK | MB_ICONERROR);
-        return 0; // Failed to Connect
+        printf("socket() failed with error code: %d", WSAGetLastError());
+        return 2;
     }
 
-    std::cout << "Connected to server: SERVER_IP_ADDRESS" << std::endl;
-    CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientThread, NULL, NULL, NULL);
-    char buffer[256] = "test";
-    while (true)
+
+    sockaddr_in server;
+    memset((char *)&server, 0, sizeof(server));
+    server.sin_family = AF_INET;
+    server.sin_port = htons(PORT);
+    server.sin_addr.S_un.S_addr = inet_addr(SERVER);
+
+
+    if (connect(client_socket, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
     {
-        std::cin.getline(buffer, sizeof(buffer));
-        send(Connection, buffer, sizeof(buffer), NULL);
-        Sleep(10);
-    }
+        printf("connect() failed with error code: %d", WSAGetLastError());
+        closesocket(client_socket);
+        WSACleanup();
+        return 3;
+    } 
+    closesocket(client_socket);
+    WSACleanup();
     return 0;
 }
