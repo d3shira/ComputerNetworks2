@@ -26,7 +26,7 @@ Privilegjet e Klientit
 *  exec(): shtojnë të dhëna në file ekzistues: file a: emri_file.txt përmbajtja shtesë
 *  exec(): fshijnë file-s ekzistues:file d: emri_file.txt
 
-*  * Klientët e zakonshëm mund të kërkojnë të lexojnë përmbajtjen e një file në server:  file r: emri_file.txt
+* Klientët e zakonshëm mund të kërkojnë të lexojnë përmbajtjen e një file në server:  file r: emri_file.txt
 
 
 
