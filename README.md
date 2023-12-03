@@ -1,5 +1,6 @@
 TCP Socket Programimi me C++
 
+Lënda: Rrjeta Kompjuterike.
 Përmbledhje
 
 Ky projekt paraqet një sistem të thjeshtë komunikimi me soketa TCP midis një serveri dhe disa klientëve duke përdorur gjuhën programuese C++. Serveri është në gjendje të trajtojë lidhje të shumta klientësh nga një numër pajijsesh dhe të kryejë operacione të ndryshme bazuar në kërkesat e klientëve.
