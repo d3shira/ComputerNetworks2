@@ -35,16 +35,16 @@ Privilegjet e Klientit
 
 Në këtë kod C++ janë përdorur disa librari të ndryshme.
 Në anën e klientit kemi: 
-* #include <iostream>
-* #include <winsock2.h>
+* #include < iostream>
+* #include < winsock2.h>
 
 Ndërsa në anën e serverit, janë përdorur këto librari:
-* #include <WinSock2.h>
-* #include <string>
-* #include <iostream>
-* #include <fstream>
+* #include < WinSock2.h>
+* #include < string>
+* #include < iostream>
+* #include < fstream>
 * #include <unordered_set>
-* #include <thread>
+* #include < thread>
 
 Punuan: <br>
 [Dëshira Randobrava](https://github.com/d3shira) <br>
